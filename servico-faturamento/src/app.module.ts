@@ -4,7 +4,7 @@ import { FaturamentoService } from './application/services/faturamento.service';
 import { Pagamento } from './infrastructure/entities/Pagamento.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PagamentoRepositoryORM } from './infrastructure/repositories/pagamento.repository.orm';
-import { ServicoFaturamentoController } from './controllers/app.controller';
+import { ServicoFaturamentoController } from './controllers/faturamento.controller';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 
 dotenv.config();

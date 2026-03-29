@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PagamentoRepositoryORM } from '../../infrastructure/repositories/pagamento.repository.orm';
 import { BadRequestException } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
+import axios from 'axios';
 
 @Injectable()
 export class FaturamentoService {
   constructor(
     private readonly pagamentoRepositoryORM: PagamentoRepositoryORM,
-    private readonly eventEmitter: EventEmitter2,
   ) {}
   async registrarPagamento(
     codigoPagamento: number,
@@ -30,14 +29,14 @@ export class FaturamentoService {
     const pagamentoSalvo = await this.pagamentoRepositoryORM.salvar(pagamento);
 
     // Evento PagamentoPlanoServicoGestao
-    this.eventEmitter.emit('PagamentoPlanoServicoGestao', {
+    await axios.post('http://localhost:3000/evento-pagamento', {
       codigoAssinatura,
       valorPago,
       dataPagamento,
     });
 
     // Evento  PagamentoPlanoServicoPlanosAtivos
-    this.eventEmitter.emit('PagamentoPlanoServicoPlanosAtivos', {
+   await axios.post('http://localhost:3003/evento-pagamento', {
       codigoAssinatura,
       valorPago,
       dataPagamento,
