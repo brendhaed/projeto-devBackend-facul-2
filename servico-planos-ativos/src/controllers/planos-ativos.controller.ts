@@ -5,9 +5,8 @@ import { PlanosAtivosService } from '../application/services/planos-ativos.servi
 export class PlanosAtivosController {
   constructor(private readonly planosAtivosService: PlanosAtivosService) {}
 
-  @Get(':codass') 
-  verificarPlanos(@Param('codass') codass: string) {
-    return this.planosAtivosService.isAtivo(Number(codass));
+  @Get('codass')
+  async verificar(@Param('codass') codass: number) {
+    return await this.planosAtivosService.isAtivo(codass);
   }
-
 }

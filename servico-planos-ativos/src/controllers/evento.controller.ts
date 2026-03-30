@@ -6,13 +6,10 @@ export class EventoController {
   constructor(private readonly planosService: PlanosAtivosService) {}
 
   @Post('evento-pagamento')
-  receberEvento(@Body() data: any) {
-    const { codigoAssinatura } = data;
+handleEvento(@Body() data: any) {
+  const { codigoAssinatura } = data;
 
-    this.planosService.ativarPlano(codigoAssinatura);
-
-    console.log('Plano ativado:', codigoAssinatura);
-
-    return { ok: true };
-  }
+  this.planosService.removerDoCache(codigoAssinatura);
+}
+  
 }

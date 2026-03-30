@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PagamentoRepositoryORM } from '../../infrastructure/repositories/pagamento.repository.orm';
 import { BadRequestException } from '@nestjs/common';
-import axios from 'axios';
+import { BrokerService } from './brooker.service';
 
 @Injectable()
 export class FaturamentoService {
   constructor(
     private readonly pagamentoRepositoryORM: PagamentoRepositoryORM,
+    private readonly brokerService: BrokerService,
   ) {}
   async registrarPagamento(
     codigoPagamento: number,
@@ -28,27 +29,17 @@ export class FaturamentoService {
     });
     const pagamentoSalvo = await this.pagamentoRepositoryORM.salvar(pagamento);
 
-    // Evento PagamentoPlanoServicoGestao
-    try {
-      await axios.post('http://localhost:3000/evento-pagamento', {
-        codigoAssinatura,
-        valorPago,
-        dataPagamento,
-      });
-    } catch (error) {
-      console.log('Erro ao enviar para servico-gestao', error.message);
-    }
+    // Evento PagamentoPlanoServicoGestao e Evento PagamentoPlanoServicoGestao
 
-    // Evento  PagamentoPlanoServicoPlanosAtivos
-    try {
-      await axios.post('http://localhost:3002/evento-pagamento', {
-        codigoAssinatura,
-        valorPago,
-        dataPagamento,
-      });
-    } catch (error) {
-      console.log('Erro ao enviar para planos-ativos', error.message);
-    }
+    const payload = {
+      dia: dataPagamento.getDate(),
+      mes: dataPagamento.getMonth() + 1,
+      ano: dataPagamento.getFullYear(),
+      codigoAssinatura,
+      valorPago,
+    };
+
+    await this.brokerService.publicarPagamento(payload);
 
     return pagamentoSalvo;
   }

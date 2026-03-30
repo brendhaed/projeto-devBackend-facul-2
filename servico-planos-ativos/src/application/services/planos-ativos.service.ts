@@ -1,18 +1,26 @@
+import axios from 'axios';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class PlanosAtivosService {
-  private planosAtivos = new Map<number, boolean>();
+  private cache = new Map<number, boolean>();
 
-  ativarPlano(codigoAssinatura: number) {
-    this.planosAtivos.set(codigoAssinatura, true);
+  async isAtivo(codigoAssinatura: number): Promise<boolean> {
+    if (this.cache.has(codigoAssinatura)) {
+    return this.cache.get(codigoAssinatura)!;
+  }
+    try {
+      const response = await axios.get(`http://localhost:3000/assinatura/${codigoAssinatura}`);
+      const ativo = response.data.ativo;
+      this.cache.set(codigoAssinatura, ativo);
+      return ativo;
+    } catch (error) {
+      console.error('Erro ao verificar plano ativo:', error);
+      return false;
+    }
   }
 
-  desativarPlano(codigoAssinatura: number) {
-    this.planosAtivos.set(codigoAssinatura, false);
-  }
-
-  isAtivo(codigoAssinatura: number): boolean {
-    return this.planosAtivos.get(codigoAssinatura) === false;
+  removerDoCache(codigoAssinatura: number) {
+    this.cache.delete(codigoAssinatura);
   }
 }

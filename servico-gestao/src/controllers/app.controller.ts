@@ -76,7 +76,9 @@ export class GestaoController {
   // Endpoind para receber evento
   @Post('evento-pagamento')
   async receberEventoPagamento(@Body() data: any) {
-    const { codigoAssinatura, valorPago, dataPagamento } = data;
+    const { dia, mes, ano, codAss, valorPago } = data;
+    const dataPagamento = new Date(ano, mes - 1, dia);
+    const codigoAssinatura = codAss;
     await this.assinaturaService.confirmarPagamento(
       codigoAssinatura,
       valorPago,
@@ -84,4 +86,10 @@ export class GestaoController {
     );
     return  { message: 'Evento de pagamento recebido e processado com sucesso' };
   }
+
+  // Endpoint para listar assinaturas ativas
+  @Get('assinatura/:codAss')
+async verificarAssinatura(@Param('codAss') codAss: string) {
+  return await this.assinaturaService.verificarAtivo(Number(codAss));
+}
 }
