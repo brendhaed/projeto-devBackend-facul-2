@@ -29,18 +29,26 @@ export class FaturamentoService {
     const pagamentoSalvo = await this.pagamentoRepositoryORM.salvar(pagamento);
 
     // Evento PagamentoPlanoServicoGestao
-    await axios.post('http://localhost:3000/evento-pagamento', {
-      codigoAssinatura,
-      valorPago,
-      dataPagamento,
-    });
+    try {
+      await axios.post('http://localhost:3000/evento-pagamento', {
+        codigoAssinatura,
+        valorPago,
+        dataPagamento,
+      });
+    } catch (error) {
+      console.log('Erro ao enviar para servico-gestao', error.message);
+    }
 
     // Evento  PagamentoPlanoServicoPlanosAtivos
-   await axios.post('http://localhost:3003/evento-pagamento', {
-      codigoAssinatura,
-      valorPago,
-      dataPagamento,
-    });
+    try {
+      await axios.post('http://localhost:3002/evento-pagamento', {
+        codigoAssinatura,
+        valorPago,
+        dataPagamento,
+      });
+    } catch (error) {
+      console.log('Erro ao enviar para planos-ativos', error.message);
+    }
 
     return pagamentoSalvo;
   }

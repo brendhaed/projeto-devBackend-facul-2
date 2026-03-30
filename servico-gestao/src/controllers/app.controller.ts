@@ -1,10 +1,16 @@
 import { Controller, Get, Post, Patch , Param , Body } from '@nestjs/common';
-import { AppService } from '../application/app.service';
+import { AppService } from '../application/services/app.service';
+import { AssinaturaService } from '../application/services/assinatura.service';
+
 
 @Controller('gerenciaplanos') 
 
 export class GestaoController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly assinaturaService: AssinaturaService,
+  ) {}
+
 
   @Get()
   getServicoGestao(): string {
@@ -67,4 +73,15 @@ export class GestaoController {
     return this.appService.assinaturasPlano((Number(codplano)));
   }
 
+  // Endpoind para receber evento
+  @Post('evento-pagamento')
+  async receberEventoPagamento(@Body() data: any) {
+    const { codigoAssinatura, valorPago, dataPagamento } = data;
+    await this.assinaturaService.confirmarPagamento(
+      codigoAssinatura,
+      valorPago,
+      dataPagamento,
+    );
+    return  { message: 'Evento de pagamento recebido e processado com sucesso' };
+  }
 }

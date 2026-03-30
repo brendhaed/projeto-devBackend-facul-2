@@ -5,13 +5,11 @@ import { Pagamento } from './infrastructure/entities/Pagamento.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PagamentoRepositoryORM } from './infrastructure/repositories/pagamento.repository.orm';
 import { ServicoFaturamentoController } from './controllers/faturamento.controller';
-import { EventEmitterModule } from '@nestjs/event-emitter';
 
 dotenv.config();
 
 @Module({
   imports: [
-    EventEmitterModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST,
@@ -22,6 +20,7 @@ dotenv.config();
       entities: [Pagamento],
       synchronize: true,
     }),
+    TypeOrmModule.forFeature([Pagamento]),
   ],
   controllers: [ServicoFaturamentoController],
   providers: [FaturamentoService, PagamentoRepositoryORM],

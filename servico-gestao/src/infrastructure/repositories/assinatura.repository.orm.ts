@@ -18,7 +18,7 @@ export class AssinaturaRepositoryORM {
     return this.repo.find();
   }
 
-  buscarPorCliente(codCli: number) {
+  buscarPorCliente(codCli: number) { 
     return this.repo.find({ where: { codigoCli: codCli } });
   }
 
@@ -29,5 +29,8 @@ export class AssinaturaRepositoryORM {
     return this.repo.findOne({
       where: { codigoPlano, codigoCli },
     });
+  }
+  async buscarPorCodigo(codigoAssinatura: number) {
+    return this.repo.findOne({ where: { codigoAssinatura } });
   }
 }

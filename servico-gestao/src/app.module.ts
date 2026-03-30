@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GestaoController } from './controllers/app.controller';
-import { AppService } from './application/app.service';
+import { AppService } from './application/services/app.service';
 import { AssinaturaRepositoryORM } from './infrastructure/repositories/assinatura.repository.orm';
 import { ClienteRepositoryORM } from './infrastructure/repositories/cliente.repository.orm';
 import { PlanoRepositoryORM } from './infrastructure/repositories/plano.repository.orm';
@@ -10,6 +10,7 @@ import { Seed } from './seed/seed';
 import { Cliente } from './infrastructure/entities/cliente.entity';
 import { Plano } from './infrastructure/entities/plano.entity';
 import { Assinatura } from './infrastructure/entities/assinatura.entity';
+import { AssinaturaService } from './application/services/assinatura.service';
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ dotenv.config();
   controllers: [GestaoController],
   providers: [
     AppService,
+    AssinaturaService,
     AssinaturaRepositoryORM,
     ClienteRepositoryORM,
     PlanoRepositoryORM,
