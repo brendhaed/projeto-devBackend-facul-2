@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PagamentoRepositoryORM } from '../../infrastructure/repositories/pagamento.repository.orm';
 import { BadRequestException } from '@nestjs/common';
-import { BrokerService } from './brooker.service';
+import { BrokerService } from './broker.service';
 
 @Injectable()
 export class FaturamentoService {

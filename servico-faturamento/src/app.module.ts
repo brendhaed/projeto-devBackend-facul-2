@@ -5,6 +5,7 @@ import { Pagamento } from './infrastructure/entities/Pagamento.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PagamentoRepositoryORM } from './infrastructure/repositories/pagamento.repository.orm';
 import { ServicoFaturamentoController } from './controllers/faturamento.controller';
+import { BrokerService } from './application/services/broker.service';
 
 dotenv.config();
 
@@ -23,7 +24,7 @@ dotenv.config();
     TypeOrmModule.forFeature([Pagamento]),
   ],
   controllers: [ServicoFaturamentoController],
-  providers: [FaturamentoService, PagamentoRepositoryORM],
+  providers: [BrokerService,FaturamentoService, PagamentoRepositoryORM],
 })
 export class AppModule {}
  
