@@ -47,7 +47,7 @@ export class GerenciaPlanosController {
   //   return this.service.buscarPorCliente(Number(id));
   // }
 
-  // assinaturas por plano
+  // assinaturas por plano 
   @Get('assinaturaplano/:codplano')
   async assinaturasPorPlano(@Param('codplano') codplano: string) {
     const { data } = await axios.get(`${this.gestaoUrl}/gerenciaplanos/assinaturaplano/${codplano}`);

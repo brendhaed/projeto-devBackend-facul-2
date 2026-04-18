@@ -10,7 +10,7 @@ export class AssinaturasController {
     const { data } = await axios.post(this.baseUrl, body);
     return data;
   }
-
+ 
   @Get(':id')
   async buscar(@Param('id') id: string) {
     const { data } = await axios.get(`${this.baseUrl}/${id}`);

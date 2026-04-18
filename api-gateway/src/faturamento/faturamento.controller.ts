@@ -10,4 +10,4 @@ export class FaturamentoController {
     const { data } = await axios.post(`${this.faturamentoUrl}/registrarpagamento`, body);
     return data;
   }
-}
+} 
